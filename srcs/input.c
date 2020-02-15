@@ -11,52 +11,86 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
+# include <stdio.h>
 
-static int	verify(char *line, int *cmp)
+static int				valid_int(char *str)
 {
-	char	**ele;
-	int		n_col;
+	int					*to_ret;
+	long long int		content;
+	int					i;
+
+	if (!str || !*str)
+		return (0);
+	i = (ft_strchr("+-", str[0])) ? 1 : 0;
+	if (i == 1 && !(str[i]))
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int				verify_line(char *line, int *cmp)
+{
+	char				**ele;
+	int					n_col;
 
 	if (!line)
 		return (-1);
 	n_col = 0;
-	ele = ft_strsplit(line);
-	// check num elements and valid elements (go see ps)
-
+	ele = ft_strsplit(line, ' ');
+	while (ele[n_col])
+	{
+		if (!valid_int(ele[n_col]))
+			return (0);
+		n_col++;
+	}
+	if (*cmp == -1)
+		*cmp = n_col;
+	else if (*cmp != n_col)
+		return (0);
 	return (1);
 }
 
-int			read_verify(char *filename, t_mlx *mlx)
+int						read_verify(char *filename, t_mlx *mlx)
 {
-	int		fd;
-	int		n_row;
-	char	*line;
+	int					fd;
+	char				*line;
 
-	if ((fd = open(filename, O_RDONLY) < 0))
+	if ((fd = open(filename, O_RDONLY)) < 0)
 		return (0);
-	n_row = 0;
+	mlx->n_r = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (!verify(line, &(mlx->n_c)))
-		// update also mlx's dimensions
+		if (!verify_line(line, &(mlx->n_c)))
+		{
+			if (line)
+				free(line);
+			return (0);
+		}
 		if (line)
 			free(line);
-		n_row++;
+		mlx->n_r++;
 	}
-	if (line)
-		free(line);
 	close(fd);
 	return (1);
 }
 
-int			init_pt(char *filename, t_mlx *mlx)
+
+int						init_pt(char *filename, t_mlx *mlx)
 {
+	int					fd;
+	char				*line;
+
 	if ((fd = open(filename, O_RDONLY) < 0))
 		return (0);
-	// read
-		// make new horizontal array
-		// gnl
-		// split and make points
+	while (get_next_line(fd, &line) > 0)
+	{
+		;// split, add pt
+	}
 	close(fd);
 	return (1);
 }

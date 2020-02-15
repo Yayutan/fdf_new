@@ -16,7 +16,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <limits.h>
 # include "libft.h"
+# include "get_next_line.h"
 
 
 typedef struct	s_3dpt
@@ -39,6 +41,8 @@ typedef struct s_mlx
 	void		*image;
 	int			n_r;
 	int			n_c;
+	int			win_x;
+	int			win_y;
 	double		x_ang;
 	double		y_ang;
 	double		z_ang;

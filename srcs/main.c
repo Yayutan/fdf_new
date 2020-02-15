@@ -33,8 +33,10 @@ static t_mlx	init_mlx(void)
 	to_ret.win = NULL;
 	to_ret.mlx = NULL;
 	to_ret.image = NULL;
-	to_ret.n_r = -1;
+	to_ret.n_r = 0;
 	to_ret.n_c = -1;
+	to_ret.win_x = 750;
+	to_ret.win_y = 600;
 	to_ret.x_ang = 0.0;
 	to_ret.y_ang = 0.0;
 	to_ret.z_ang = 0.0;
