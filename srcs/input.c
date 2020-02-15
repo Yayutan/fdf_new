@@ -79,17 +79,26 @@ int						read_verify(char *filename, t_mlx *mlx)
 	return (1);
 }
 
+static void				add_line(char *line, t_2dpt *arr, int n_c)
+{
+
+}
 
 int						init_pt(char *filename, t_mlx *mlx)
 {
 	int					fd;
+	int					r;
 	char				*line;
 
 	if ((fd = open(filename, O_RDONLY) < 0))
 		return (0);
+	mlx->tw_dpt = (t_2dpt**)ft_memalloc(mlx->n_r * sizeof(t_2dpt*));
+	r = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
-		;// split, add pt
+		mlx->tw_dpt[r] = (t_2dpt*)ft_memalloc(mlx->n_c * sizeof(t_2dpt));
+		add_line(line, mlx->tw_dpt[r], mlx->n_c);
+		r++;
 	}
 	close(fd);
 	return (1);
