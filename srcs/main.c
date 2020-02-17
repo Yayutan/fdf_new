@@ -26,7 +26,7 @@ static void		clean_struct(t_mlx *mlx)
 		free(mlx->tw_dpt);
 }
 
-static t_mlx	init_mlx(void)
+static t_mlx	init_fdf(void)
 {
 	t_mlx		to_ret;
 
@@ -54,17 +54,17 @@ int				main(int ac, char **av)
 
 	if (ac != 2)
 		ft_err_exit("usage: ./fdf [file]");
-	mlx = init_mlx();
+	mlx = init_fdf();
 	if(!read_verify(av[1], &mlx))
 		ft_err_exit("Error");
-	if (!init_pt(av[1], &mlx))
+	if (!init_pt(av[1], &mlx) || !init_win(&mlx))
 	{
 		clean_struct(&mlx);
 		ft_err_exit("Failed to allocate pts and window");
 	}
-	// setup win var (err chk??)
+
 	// form initial image and draw
 	// set loop hook and loop
-
+	mlx_loop(mlx.mlx);
 	return (0);
 }

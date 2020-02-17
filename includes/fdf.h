@@ -19,6 +19,7 @@
 # include <limits.h>
 # include "libft.h"
 # include "get_next_line.h"
+# include "mlx.h"
 
 
 typedef struct	s_3dpt
@@ -56,6 +57,6 @@ typedef struct s_mlx
 
 int			read_verify(char *filename, t_mlx *mlx);
 int			init_pt(char *filename, t_mlx *mlx);
-
+int			init_win(t_mlx *mlx);
 
 #endif

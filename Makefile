@@ -25,6 +25,7 @@ CLEAR = "\033[0m"
 
 SRC_NAME =	draw.c\
 			input.c\
+			math.c\
 			main.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
