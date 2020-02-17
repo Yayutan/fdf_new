@@ -23,8 +23,8 @@
 
 typedef struct	s_3dpt
 {
-	int			x;
-	int			y;
+	double		x;
+	double		y;
 	int			z;
 }				t_3dpt;
 

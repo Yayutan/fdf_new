@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-# include <stdio.h>
+///////
+// # include <stdio.h>
+//////
 
 static int				valid_int(char *str)
 {
-	int					*to_ret;
-	long long int		content;
 	int					i;
 
 	if (!str || !*str)
@@ -79,9 +79,24 @@ int						read_verify(char *filename, t_mlx *mlx)
 	return (1);
 }
 
-static void				add_line(char *line, t_2dpt *arr, int n_c)
+static void				add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 {
+	int					a_i;
+	int					s_i;
 
+	a_i = 0;
+	s_i = 0;
+	while (line[s_i] && line[s_i] == ' ')
+		s_i++;
+	while (line[s_i] && a_i < mlx->n_c)
+	{
+		arr[a_i].x = a_i - ((double)(mlx->n_c - 1) / 2);
+		arr[a_i].y = row - ((double)(mlx->n_r - 1) / 2);
+		arr[a_i].z = ft_atoi(line + s_i);
+		while (line[s_i] && line[s_i] == ' ')
+			s_i++;
+		a_i++;
+	}
 }
 
 int						init_pt(char *filename, t_mlx *mlx)
@@ -90,16 +105,24 @@ int						init_pt(char *filename, t_mlx *mlx)
 	int					r;
 	char				*line;
 
-	if ((fd = open(filename, O_RDONLY) < 0))
+	if ((fd = open(filename, O_RDONLY)) < 0)
 		return (0);
-	mlx->tw_dpt = (t_2dpt**)ft_memalloc(mlx->n_r * sizeof(t_2dpt*));
+	mlx->th_dpt = (t_3dpt**)ft_memalloc(mlx->n_r * sizeof(t_3dpt*)); // err check
 	r = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
-		mlx->tw_dpt[r] = (t_2dpt*)ft_memalloc(mlx->n_c * sizeof(t_2dpt));
-		add_line(line, mlx->tw_dpt[r], mlx->n_c);
+		mlx->th_dpt[r] = (t_3dpt*)ft_memalloc(mlx->n_c * sizeof(t_3dpt));
+		add_line(line, mlx->th_dpt[r], mlx, r);
 		r++;
 	}
+	/////////
+	// for (int i = 0; i < mlx->n_r; i++)
+	// {
+	// 	for (int j = 0; j < mlx->n_c; j++)
+	// 		printf("(%.2f, %.2f, %d) ", mlx->th_dpt[i][j].x, mlx->th_dpt[i][j].y, mlx->th_dpt[i][j].z);
+	// 	printf("\n");
+	// }
+	////////
 	close(fd);
 	return (1);
 }
