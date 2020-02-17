@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-static void		clean_struct(t_mlx *mlx)
+static void			clean_struct(t_mlx *mlx)
 {
 	if (mlx->win)
 		free(mlx->win);
@@ -26,9 +26,9 @@ static void		clean_struct(t_mlx *mlx)
 		free(mlx->tw_dpt);
 }
 
-static t_mlx	init_fdf(void)
+static t_mlx		init_fdf(void)
 {
-	t_mlx		to_ret;
+	t_mlx			to_ret;
 
 	to_ret.win = NULL;
 	to_ret.mlx = NULL;
@@ -37,6 +37,7 @@ static t_mlx	init_fdf(void)
 	to_ret.n_c = -1;
 	to_ret.win_x = 750;
 	to_ret.win_y = 600;
+	to_ret.scale = 1;
 	to_ret.x_ang = 0.0;
 	to_ret.y_ang = 0.0;
 	to_ret.z_ang = 0.0;
@@ -48,9 +49,42 @@ static t_mlx	init_fdf(void)
 	return (to_ret);
 }
 
-int				main(int ac, char **av)
+static void			reset_draw_param(t_mlx *mlx)
 {
-	t_mlx		mlx;
+	mlx->scale = 1;
+	mlx->x_ang = 0.0;
+	mlx->y_ang = 0.0;
+	mlx->z_ang = 0.0;
+	mlx->x_sh = 0;
+	mlx->y_sh = 0;
+	mlx->z_sh = 0;
+}
+
+////
+#include <stdio.h>
+////
+static int			key_handler(int k, t_mlx *mlx)
+{
+	printf ("%d\n", k);
+	if (k == 53)
+		exit(0);
+	if (k == 0 || k == 1 || k == 2 || k == 6 || k == 7 || k == 8) // a;s;d;z;x;c
+		; //rotate(m, k, PI / 12);
+	if (k == 123 || k == 124 || k == 125 || k == 126) // left;right;down;up
+		; //shift(m, k, (int)WIN_W * 0.2);
+	if (k == 31 || k == 35 || k == 33 || k == 47 || k == 41 || k == 39) // o p [ l ; '
+		; //stretch(m, k, 0.1);
+	if (k == 15)
+		reset_draw_param(mlx);
+	// keys to change perspective?
+	trans_coor(mlx);
+	draw_image(mlx);
+	return (k);
+}
+
+int					main(int ac, char **av)
+{
+	t_mlx			mlx;
 
 	if (ac != 2)
 		ft_err_exit("usage: ./fdf [file]");
@@ -62,9 +96,12 @@ int				main(int ac, char **av)
 		clean_struct(&mlx);
 		ft_err_exit("Failed to allocate pts and window");
 	}
-
-	// form initial image and draw
-	// set loop hook and loop
+	if (!trans_coor(&mlx) || !draw_image(&mlx))
+	{
+		clean_struct(&mlx);
+		ft_err_exit("Failed to put points to window");
+	}
+	mlx_key_hook(mlx.win, key_handler, &mlx);
 	mlx_loop(mlx.mlx);
 	return (0);
 }

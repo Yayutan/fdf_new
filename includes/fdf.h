@@ -44,6 +44,7 @@ typedef struct s_mlx
 	int			n_c;
 	int			win_x;
 	int			win_y;
+	int			scale;
 	double		x_ang;
 	double		y_ang;
 	double		z_ang;
@@ -58,5 +59,8 @@ typedef struct s_mlx
 int			read_verify(char *filename, t_mlx *mlx);
 int			init_pt(char *filename, t_mlx *mlx);
 int			init_win(t_mlx *mlx);
+int			trans_coor(t_mlx *mlx);
+int			draw_image(t_mlx *mlx);
+
 
 #endif

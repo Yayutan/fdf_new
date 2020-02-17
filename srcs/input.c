@@ -15,9 +15,9 @@
 // # include <stdio.h>
 //////
 
-static int				valid_int(char *str)
+static int			valid_int(char *str)
 {
-	int					i;
+	int				i;
 
 	if (!str || !*str)
 		return (0);
@@ -33,13 +33,13 @@ static int				valid_int(char *str)
 	return (1);
 }
 
-static int				verify_line(char *line, int *cmp)
+static int			verify_line(char *line, int *cmp)
 {
-	char				**ele;
-	int					n_col;
+	char			**ele;
+	int				n_col;
 
 	if (!line)
-		return (-1);
+		return (0);
 	n_col = 0;
 	ele = ft_strsplit(line, ' ');
 	while (ele[n_col])
@@ -79,10 +79,10 @@ int						read_verify(char *filename, t_mlx *mlx)
 	return (1);
 }
 
-static void				add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
+static void			add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 {
-	int					a_i;
-	int					s_i;
+	int				a_i;
+	int				s_i;
 
 	a_i = 0;
 	s_i = 0;
@@ -99,15 +99,16 @@ static void				add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 	}
 }
 
-int						init_pt(char *filename, t_mlx *mlx)
+int					init_pt(char *filename, t_mlx *mlx)
 {
-	int					fd;
-	int					r;
-	char				*line;
+	int				fd;
+	int				r;
+	char			*line;
 
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		return (0);
-	mlx->th_dpt = (t_3dpt**)ft_memalloc(mlx->n_r * sizeof(t_3dpt*)); // err check
+	if (!(mlx->th_dpt = (t_3dpt**)ft_memalloc(mlx->n_r * sizeof(t_3dpt*))))
+		return (0);
 	r = 0;
 	while (get_next_line(fd, &line) > 0)
 	{

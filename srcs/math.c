@@ -12,3 +12,8 @@
 
 #include "fdf.h"
 
+int					trans_coor(t_mlx *mlx)
+{
+	(void)mlx;
+	return (1);
+}
