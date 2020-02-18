@@ -26,7 +26,7 @@ typedef struct	s_3dpt
 {
 	double		x;
 	double		y;
-	int			z;
+	double		z;
 }				t_3dpt;
 
 typedef struct	s_2dpt
@@ -44,15 +44,13 @@ typedef struct s_mlx
 	int			n_c;
 	int			win_x;
 	int			win_y;
-	int			scale;
-	double		x_ang;
-	double		y_ang;
-	double		z_ang;
-	int			x_sh;
-	int			y_sh;
-	int			z_sh;
+	double		min[2];
+	double		max[2];
+	double		ang[3];
+	int			shift[3];
+	int			stretch[3];
 	t_3dpt		**th_dpt;
-	t_2dpt		**tw_dpt;
+	// t_2dpt		**tw_dpt;
 
 }				t_mlx;
 

@@ -38,14 +38,14 @@ static t_mlx		init_fdf(void)
 	to_ret.win_x = 750;
 	to_ret.win_y = 600;
 	to_ret.scale = 1;
-	to_ret.x_ang = 0.0;
-	to_ret.y_ang = 0.0;
-	to_ret.z_ang = 0.0;
+	to_ret.ang[0] = 0.0;
+	to_ret.ang[1] = 0.0;
+	to_ret.ang[2] = 0.0;
 	to_ret.x_sh = 0;
 	to_ret.y_sh = 0;
 	to_ret.z_sh = 0;
 	to_ret.th_dpt = NULL;
-	to_ret.tw_dpt = NULL;
+	// to_ret.tw_dpt = NULL;
 	return (to_ret);
 }
 
