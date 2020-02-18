@@ -31,8 +31,8 @@ typedef struct	s_3dpt
 
 typedef struct	s_2dpt
 {
-	int			px;
-	int			py;
+	double		px;
+	double		py;
 }				t_2dpt;
 
 typedef struct s_mlx
@@ -47,10 +47,10 @@ typedef struct s_mlx
 	double		min[2];
 	double		max[2];
 	double		ang[3];
-	int			shift[3];
-	int			stretch[3];
+	int			sht[3];
+	int			str[3];
 	t_3dpt		**th_dpt;
-	// t_2dpt		**tw_dpt;
+	t_2dpt		**tw_dpt;
 
 }				t_mlx;
 

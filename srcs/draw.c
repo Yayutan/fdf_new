@@ -51,6 +51,8 @@ int					init_win(t_mlx *mlx)
 		return (0);
 	if (!(mlx->win = mlx_new_window(mlx->mlx, mlx->win_x, mlx->win_y, "fdf")))
 		return (0);
+	if (!(mlx->tw_dpt = (t_2dpt**)ft_memealloc(sizeof(t_2dpt) * mlx->n_r * mlx->n_c)))
+		return (0);
 	if (!(draw_image(mlx)))
 		return (0);	
 	return (1);	
