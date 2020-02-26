@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <math.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "mlx.h"
@@ -31,8 +32,8 @@ typedef struct	s_3dpt
 
 typedef struct	s_2dpt
 {
-	double		px;
-	double		py;
+	int			x;
+	int			y;
 }				t_2dpt;
 
 typedef struct s_mlx
@@ -54,11 +55,11 @@ typedef struct s_mlx
 
 }				t_mlx;
 
-int			read_verify(char *filename, t_mlx *mlx);
-int			init_pt(char *filename, t_mlx *mlx);
-int			init_win(t_mlx *mlx);
-int			trans_coor(t_mlx *mlx);
-int			draw_image(t_mlx *mlx);
+int				read_verify(char *filename, t_mlx *mlx);
+int				init_pt(char *filename, t_mlx *mlx);
+int				init_win(t_mlx *mlx);
+int				trans_coor(t_mlx *mlx);
+int				draw_image(t_mlx *mlx);
 
 
 #endif

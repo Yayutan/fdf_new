@@ -12,33 +12,56 @@
 
 #include "fdf.h"
 
-static void			transform_pixel(t_mlx *mlx, t_3dpt **thd, t_2dpt **twd)
+static t_2dpt		parallel_proj(t_3dpt thd, int win_y) // confirm matrix
+{
+	t_2dpt			res;
+
+	res.x = (int)thd.x;
+	res.y = win_y - (int)(thd.y - thd.z);
+	return (res);
+}
+
+static void			transform_pixel(t_mlx *mlx, t_3dpt **thd)
 {
 	int				r;
 	int				c;
-	double			x_sc;
-	double			y_sc;
 
+	t_2dpt			res;
+	// double			x_sc;
+	// double			y_sc; // update
+
+	// (void) twd;
 	r = 0;
 	while (r < mlx->n_r)
 	{
 		c = 0;
 		while (c < mlx->n_c)
 		{
-			twd[r][c].x = thd[r][c].x;
-			twd[r][c].y = mlx->win_y - (thd[r][c].y + thd[r][c].z);
+			res = parallel_proj(thd[r][c], mlx->win_y);// change to function pointer
+			mlx->tw_dpt[r][c].x = res.x;
+			mlx->tw_dpt[r][c].y = res.y;
+			// update max, min if scale not set
 			c++;
 		}
-		
+		// calc scale if not set
+		r++;
+	}
 }
 
-static void			transform_th_d(t_mlx *mlx, t_2dpt **twd)
-{
-	t_3dpt			th_d_coor[mlx->n_r][mlx->n_c];
+static void			transform_th_d(t_mlx *mlx)
+{ // err chk, free
+	t_3dpt			**th_d_coor;
 	int				r;
 	int				c;
 	double			or[3];
 
+	th_d_coor = (t_3dpt**)ft_memalloc(sizeof(t_3dpt*) * mlx->n_r);
+	r = 0;
+	while (r < mlx->n_r)
+	{
+		th_d_coor[r] = (t_3dpt*)ft_memalloc(sizeof(t_3dpt) * mlx->n_c);
+		r++;
+	}
 	r = 0;
 	while (r < mlx->n_r)
 	{
@@ -55,15 +78,26 @@ static void			transform_th_d(t_mlx *mlx, t_2dpt **twd)
 		}
 		r++;
 	}
-	transform_pixel(mlx, th_d_coor, twd);	
+	transform_pixel(mlx, th_d_coor); // merge into loop on top? if i can calc scale before the loop
+	// free(th_d_coor);
 }
 
-int					trans_coor(t_mlx *mlx)
+int					trans_coor(t_mlx *mlx) // needs error check
 {
+	int				r;
 
-	t_2dpt			tw_d_coor[mlx->n_r][mlx->n_c];
-
-	transform_th_d(mlx, tw_d_coor);
-	ft_memcpy(mlx->tw_dpt, tw_d_coor, sizeof(tw_d_coor));
+	if (!mlx->tw_dpt)
+	{
+		mlx->tw_dpt = (t_2dpt**)ft_memalloc(sizeof(t_2dpt*) * mlx->n_r);
+		r = 0;
+		while (r < mlx->n_r)
+		{
+			mlx->tw_dpt[r] = (t_2dpt*)ft_memalloc(sizeof(t_2dpt) * mlx->n_c);
+			r++;
+		}
+	}
+	
+	transform_th_d(mlx);
+	// ft_memcpy(mlx->tw_dpt, tw_d_coor, sizeof(tw_d_coor));
 	return (1);
 }

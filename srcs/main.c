@@ -53,13 +53,15 @@ static t_mlx		init_fdf(void)
 
 static void			reset_draw_param(t_mlx *mlx)
 {
-	mlx->scale = 1;
-	mlx->x_ang = 0.0;
-	mlx->y_ang = 0.0;
-	mlx->z_ang = 0.0;
-	mlx->x_sh = 0;
-	mlx->y_sh = 0;
-	mlx->z_sh = 0;
+	mlx->ang[0] = 0.0;
+	mlx->ang[1] = 0.0;
+	mlx->ang[2] = 0.0;
+	mlx->sht[0] = 0;
+	mlx->sht[1] = 0;
+	mlx->sht[2] = 0;
+	mlx->str[0] = 1;
+	mlx->str[1] = 1;
+	mlx->str[2] = 1;
 }
 
 ////
@@ -70,14 +72,16 @@ static int			key_handler(int k, t_mlx *mlx)
 	printf ("%d\n", k);
 	if (k == 53)
 		exit(0);
-	if (k == 0 || k == 1 || k == 2 || k == 6 || k == 7 || k == 8) // a;s;d;z;x;c
-		; //rotate(m, k, PI / 12);
-	if (k == 123 || k == 124 || k == 125 || k == 126) // left;right;down;up
-		; //shift(m, k, (int)WIN_W * 0.2);
-	if (k == 31 || k == 35 || k == 33 || k == 47 || k == 41 || k == 39) // o p [ l ; '
-		; //stretch(m, k, 0.1);
-	if (k == 15)
+	if (k == 1)
 		reset_draw_param(mlx);
+	// if (k == 0 || k == 1 || k == 2 || k == 6 || k == 7 || k == 8) // a;s;d;z;x;c
+	// 	; //rotate(m, k, PI / 12); // M_PI
+	// if (k == 123 || k == 124 || k == 125 || k == 126) // left;right;down;up
+	// 	; //shift(m, k, (int)WIN_W * 0.2);
+	// if (k == 31 || k == 35 || k == 33 || k == 47 || k == 41 || k == 39) // o p [ l ; '
+	// 	; //stretch(m, k, 0.1);
+	// if (k == 15)
+	// 	reset_draw_param(mlx);
 	// keys to change perspective?
 	trans_coor(mlx);
 	draw_image(mlx);

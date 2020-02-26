@@ -13,6 +13,7 @@ MLX_INC = -I $(MLX_PATH)
 
 LFT_LINK = -L $(LFT_PATH) -l ft
 MLX_LINK = -L $(MLX_PATH) -l mlx -framework OpenGL -framework APPkit
+MATH_LINK = -lm
 
 FLAGS = -Wall -Werror -Wextra
 TEST_FLAGS = -g
@@ -40,7 +41,7 @@ $(LFT):
 	@make -C $(MLX_PATH)
 
 $(NAME): $(SRC)
-	@gcc $(FLAGS) -o $(NAME) $(FDF_INC) $(LFT_INC) $(MLX_INC) $(LFT_LINK) $(MLX_LINK) $(SRC)
+	@gcc $(FLAGS) -o $(NAME) $(FDF_INC) $(LFT_INC) $(MLX_INC) $(LFT_LINK) $(MLX_LINK) $(MATH_LINK) $(SRC)
 	@echo $(GREEN)"fdf compiled" $(CLEAR)
 
 clean:

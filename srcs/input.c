@@ -90,8 +90,8 @@ static void			add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 		s_i++;
 	while (line[s_i] && a_i < mlx->n_c)
 	{
-		arr[a_i].x = a_i - ((double)(mlx->n_c - 1) / 2);
-		arr[a_i].y = row - ((double)(mlx->n_r - 1) / 2);
+		arr[a_i].x = a_i; // - ((double)(mlx->n_c - 1) / 2);
+		arr[a_i].y = row; // - ((double)(mlx->n_r - 1) / 2);
 		arr[a_i].z = ft_atoi(line + s_i);
 		while (line[s_i] && line[s_i] == ' ')
 			s_i++;
