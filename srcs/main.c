@@ -64,9 +64,6 @@ static void			reset_draw_param(t_mlx *mlx)
 	mlx->str[2] = 1;
 }
 
-////
-#include <stdio.h>
-////
 static int			key_handler(int k, t_mlx *mlx)
 {
 	printf ("%d\n", k);

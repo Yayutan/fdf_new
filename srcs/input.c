@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-///////
-// # include <stdio.h>
-//////
 
 static int			valid_int(char *str)
 {
@@ -90,9 +87,9 @@ static void			add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 		s_i++;
 	while (line[s_i] && a_i < mlx->n_c)
 	{
-		arr[a_i].x = a_i; // - ((double)(mlx->n_c - 1) / 2);
-		arr[a_i].y = row; // - ((double)(mlx->n_r - 1) / 2);
-		arr[a_i].z = ft_atoi(line + s_i);
+		arr[a_i].x = (double)a_i; // - ((double)(mlx->n_c - 1) / 2);
+		arr[a_i].y = (double)row; // - ((double)(mlx->n_r - 1) / 2);
+		arr[a_i].z = (double)ft_atoi(line + s_i++);
 		while (line[s_i] && line[s_i] == ' ')
 			s_i++;
 		a_i++;
@@ -113,14 +110,14 @@ int					init_pt(char *filename, t_mlx *mlx)
 	while (get_next_line(fd, &line) > 0)
 	{
 		mlx->th_dpt[r] = (t_3dpt*)ft_memalloc(mlx->n_c * sizeof(t_3dpt));
-		add_line(line, mlx->th_dpt[r], mlx, r);
+		add_line(line, mlx->th_dpt[r], mlx, -1 * r);
 		r++;
 	}
 	/////////
 	// for (int i = 0; i < mlx->n_r; i++)
 	// {
 	// 	for (int j = 0; j < mlx->n_c; j++)
-	// 		printf("(%.2f, %.2f, %d) ", mlx->th_dpt[i][j].x, mlx->th_dpt[i][j].y, mlx->th_dpt[i][j].z);
+	// 		printf("(%.2f, %.2f, %.2f) ", mlx->th_dpt[i][j].x, mlx->th_dpt[i][j].y, mlx->th_dpt[i][j].z);
 	// 	printf("\n");
 	// }
 	////////

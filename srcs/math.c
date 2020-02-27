@@ -15,9 +15,12 @@
 static t_2dpt		parallel_proj(t_3dpt thd, int win_y) // confirm matrix
 {
 	t_2dpt			res;
+	(void) win_y;
 
-	res.x = (int)thd.x;
-	res.y = win_y - (int)(thd.y - thd.z);
+	res.x = 20 * (int)(thd.x);
+	res.y = (int)(-20 * thd.y + 5 * thd.z);
+	// res.y = 20 * (int)(-1 * thd.y + thd.z);
+
 	return (res);
 }
 
@@ -74,6 +77,7 @@ static void			transform_th_d(t_mlx *mlx)
 			th_d_coor[r][c].x = mlx->str[0] * (or[0] * (cos(mlx->ang[1]) * cos(mlx->ang[2])) + or[1] * (-1 * cos(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (-1 * sin(mlx->ang[1])));
 			th_d_coor[r][c].y = mlx->str[1] * (or[0] * (cos(mlx->ang[0]) * sin(mlx->ang[2]) - cos(mlx->ang[2]) * sin(mlx->ang[0]) * sin(mlx->ang[1])) + or[1] * (cos(mlx->ang[0]) * cos(mlx->ang[2]) + sin(mlx->ang[0]) * sin(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (-1 * cos(mlx->ang[1]) * sin(mlx->ang[0])));
 			th_d_coor[r][c].z = mlx->str[2] * (or[0] * (cos(mlx->ang[0]) * cos(mlx->ang[2]) * sin(mlx->ang[1]) + sin(mlx->ang[0]) * sin(mlx->ang[2])) + or[1] * (cos(mlx->ang[2]) * sin(mlx->ang[0]) - cos(mlx->ang[0]) * sin(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (cos(mlx->ang[0]) * cos(mlx->ang[1])));
+			// printf("(%.0f,%.0f,%.0f)->(%.0f,%.0f,%.0f)\n ", or[0], or[1], or[2], th_d_coor[r][c].x, th_d_coor[r][c].y, th_d_coor[r][c].z);
 			c++;
 		}
 		r++;
@@ -96,8 +100,12 @@ int					trans_coor(t_mlx *mlx) // needs error check
 			r++;
 		}
 	}
-	
 	transform_th_d(mlx);
+	// for (int i = 0; i < mlx->n_r; i++)
+	// {
+	// 	for (int j = 0; j < mlx->n_c; j++)
+	// 		printf("(%.0f,%.0f,%.0f)->(%d,%d)\n ", mlx->th_dpt[i][j].x, mlx->th_dpt[i][j].y, mlx->th_dpt[i][j].z, mlx->tw_dpt[i][j].x, mlx->tw_dpt[i][j].y);
+	// }
 	// ft_memcpy(mlx->tw_dpt, tw_d_coor, sizeof(tw_d_coor));
 	return (1);
 }

@@ -12,12 +12,6 @@
 
 #include "fdf.h"
 
-///////
-# include <stdio.h>
-//////
-
-
-
 /*
 plotLine(int x0, int y0, int x1, int y1)
     dx =  abs(x1-x0);
@@ -49,6 +43,7 @@ static void			draw_line(t_mlx *mlx, int *img, t_2dpt p1, t_2dpt p2)
 	int				err;
 	int				e2;
 
+	// printf("(%d,%d)->(%d,%d)\n", p1.x, p1.y, p2.x, p2.y);
 	dx = abs(p2.x - p1.x);
 	dy = -1 * abs(p2.y - p1.y);
 	sx = (p2.x > p1.x) ? 1 : -1;
@@ -57,7 +52,8 @@ static void			draw_line(t_mlx *mlx, int *img, t_2dpt p1, t_2dpt p2)
 	while (1)
 	{
 		// printf("P:%d,%d\n", p1.x, p1.y);
-		img[p1.x + p1.y * mlx->win_x] = 0xffffff;
+		if (p1.x >= 0 && p1.x < mlx->win_x && p1.y >= 0 && p1.y < mlx->win_y)
+			img[p1.x + p1.y * mlx->win_x] = 0xffffff;
 		if (p1.x == p2.x && p1.y == p2.y)
 			break ;
 		e2 = 2 * err;
