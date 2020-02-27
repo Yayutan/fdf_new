@@ -12,28 +12,6 @@
 
 #include "fdf.h"
 
-/*
-plotLine(int x0, int y0, int x1, int y1)
-    dx =  abs(x1-x0);
-    sx = x0<x1 ? 1 : -1;
-    dy = -abs(y1-y0);
-    sy = y0<y1 ? 1 : -1;
-    err = dx+dy;
-    while (true)
-        plot(x0, y0);
-        if (x0==x1 && y0==y1) break;
-        e2 = 2*err;
-        if (e2 >= dy) 
-            err += dy;
-            x0 += sx;
-        end if
-        if (e2 <= dx)
-            err += dx;
-            y0 += sy;
-        end if
-    end while
-*/
-
 static void			draw_line(t_mlx *mlx, int *img, t_2dpt p1, t_2dpt p2)
 {
 	int				dx;
@@ -86,9 +64,10 @@ int					draw_image(t_mlx *mlx)
 	while (r < mlx->n_r)
 	{
 		c = 0;
-		while (c < mlx->n_c - 1)
+		while (c < mlx->n_c)
 		{
-			draw_line(mlx, img, mlx->tw_dpt[r][c], mlx->tw_dpt[r][c + 1]);
+			if (c + 1 < mlx->n_c)
+				draw_line(mlx, img, mlx->tw_dpt[r][c], mlx->tw_dpt[r][c + 1]);
 			if (r + 1 < mlx->n_r)
 				draw_line(mlx, img, mlx->tw_dpt[r][c], mlx->tw_dpt[r + 1][c]);
 			c++;

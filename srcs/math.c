@@ -17,8 +17,8 @@ static t_2dpt		parallel_proj(t_3dpt thd, int win_y) // confirm matrix
 	t_2dpt			res;
 	(void) win_y;
 
-	res.x = 20 * (int)(thd.x);
-	res.y = (int)(-20 * thd.y + 5 * thd.z);
+	res.x = (int)(300 + 50 * (thd.x));
+	res.y = (int)(200 + 50 * (-thd.y - thd.z));
 	// res.y = 20 * (int)(-1 * thd.y + thd.z);
 
 	return (res);
@@ -43,6 +43,7 @@ static void			transform_pixel(t_mlx *mlx, t_3dpt **thd)
 			res = parallel_proj(thd[r][c], mlx->win_y);// change to function pointer
 			mlx->tw_dpt[r][c].x = res.x;
 			mlx->tw_dpt[r][c].y = res.y;
+			printf("(%.0f,%.0f,%.0f)->(%d,%d)\n ", thd[r][c].x, thd[r][c].y, thd[r][c].z, res.x, res.y);
 			// update max, min if scale not set
 			c++;
 		}
@@ -77,7 +78,7 @@ static void			transform_th_d(t_mlx *mlx)
 			th_d_coor[r][c].x = mlx->str[0] * (or[0] * (cos(mlx->ang[1]) * cos(mlx->ang[2])) + or[1] * (-1 * cos(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (-1 * sin(mlx->ang[1])));
 			th_d_coor[r][c].y = mlx->str[1] * (or[0] * (cos(mlx->ang[0]) * sin(mlx->ang[2]) - cos(mlx->ang[2]) * sin(mlx->ang[0]) * sin(mlx->ang[1])) + or[1] * (cos(mlx->ang[0]) * cos(mlx->ang[2]) + sin(mlx->ang[0]) * sin(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (-1 * cos(mlx->ang[1]) * sin(mlx->ang[0])));
 			th_d_coor[r][c].z = mlx->str[2] * (or[0] * (cos(mlx->ang[0]) * cos(mlx->ang[2]) * sin(mlx->ang[1]) + sin(mlx->ang[0]) * sin(mlx->ang[2])) + or[1] * (cos(mlx->ang[2]) * sin(mlx->ang[0]) - cos(mlx->ang[0]) * sin(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (cos(mlx->ang[0]) * cos(mlx->ang[1])));
-			// printf("(%.0f,%.0f,%.0f)->(%.0f,%.0f,%.0f)\n ", or[0], or[1], or[2], th_d_coor[r][c].x, th_d_coor[r][c].y, th_d_coor[r][c].z);
+			printf("(%.0f,%.0f,%.0f)->(%.0f,%.0f,%.0f)\n ", or[0], or[1], or[2], th_d_coor[r][c].x, th_d_coor[r][c].y, th_d_coor[r][c].z);
 			c++;
 		}
 		r++;
