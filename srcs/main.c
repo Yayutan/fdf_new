@@ -37,10 +37,9 @@ static t_mlx		init_fdf(void)
 	to_ret.n_c = -1;
 	to_ret.win_x = 750;
 	to_ret.win_y = 600;
-	to_ret.ang[0] = 0.0;
+	to_ret.ang[0] = -M_PI / 12;
 	to_ret.ang[1] = 0.0;
-	to_ret.ang[2] = M_PI / 6;
-	// to_ret.ang[2] = 0;
+	to_ret.ang[2] = -M_PI / 12;
 	to_ret.sht[0] = 0;
 	to_ret.sht[1] = 0;
 	to_ret.sht[2] = 0;

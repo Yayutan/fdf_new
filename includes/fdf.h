@@ -54,7 +54,7 @@ typedef struct s_mlx
 	double		max[2];
 	double		ang[3];
 	int			sht[3];
-	int			str[3];
+	double		str[3];
 	t_3dpt		**th_dpt;
 	t_2dpt		**tw_dpt;
 
