@@ -50,10 +50,11 @@ typedef struct s_mlx
 	int			n_c;
 	int			win_x;
 	int			win_y;
-	double		min[2];
-	double		max[2];
+	int			win_sc[2];
+	double		min_z;
+	double		max_z;
 	double		ang[3];
-	int			sht[3];
+	int			sht[2];
 	double		str[3];
 	t_3dpt		**th_dpt;
 	t_2dpt		**tw_dpt;
@@ -65,6 +66,6 @@ int				init_pt(char *filename, t_mlx *mlx);
 int				init_win(t_mlx *mlx);
 int				trans_coor(t_mlx *mlx);
 int				draw_image(t_mlx *mlx);
-
+void			rotate(t_mlx *mlx, int k, double ang);
 
 #endif

@@ -88,8 +88,14 @@ static void			add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 	while (line[s_i] && a_i < mlx->n_c)
 	{
 		arr[a_i].x = a_i - ((double)(mlx->n_c - 1) / 2);
-		arr[a_i].y = row - ((double)(mlx->n_r - 1) / 2);
-		arr[a_i].z = (double)ft_atoi(line + s_i++);
+		arr[a_i].y = ((double)(mlx->n_r - 1) / 2) - row;
+		arr[a_i].z = (double)ft_atoi(line + s_i);
+		while (line[s_i] && line[s_i] != ' ')
+			s_i++;
+		if (arr[a_i].z > mlx->max_z)
+			mlx->max_z = arr[a_i].z;
+		if (arr[a_i].z < mlx->min_z)
+			mlx->min_z = arr[a_i].z;
 		while (line[s_i] && line[s_i] == ' ')
 			s_i++;
 		a_i++;
@@ -110,7 +116,7 @@ int					init_pt(char *filename, t_mlx *mlx)
 	while (get_next_line(fd, &line) > 0)
 	{
 		mlx->th_dpt[r] = (t_3dpt*)ft_memalloc(mlx->n_c * sizeof(t_3dpt));
-		add_line(line, mlx->th_dpt[r], mlx, -1 * r);
+		add_line(line, mlx->th_dpt[r], mlx, r);
 		r++;
 	}
 	/////////
@@ -122,5 +128,11 @@ int					init_pt(char *filename, t_mlx *mlx)
 	// }
 	////////
 	close(fd);
+
+	mlx->str[0] = ((mlx->max_z - mlx->min_z) / 0.4) / ((mlx->n_r < mlx->n_c) ? mlx->n_r : mlx->n_c);
+	if (mlx->str[0] == 0)
+		mlx->str[0] = 1;
+	mlx->str[1] = mlx->str[0];
+	mlx->str[2] = 1;
 	return (1);
 }

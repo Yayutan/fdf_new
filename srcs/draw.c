@@ -29,7 +29,6 @@ static void			draw_line(t_mlx *mlx, int *img, t_2dpt p1, t_2dpt p2)
 	err = dx + dy;
 	while (1)
 	{
-		// printf("P:%d,%d\n", p1.x, p1.y);
 		if (p1.x >= 0 && p1.x < mlx->win_x && p1.y >= 0 && p1.y < mlx->win_y)
 			img[p1.x + p1.y * mlx->win_x] = 0xffffff;
 		if (p1.x == p2.x && p1.y == p2.y)
@@ -59,6 +58,8 @@ int					draw_image(t_mlx *mlx)
 		mlx_destroy_image(mlx->mlx, mlx->image); // don't do this every time
 	if (!(mlx->image = mlx_new_image(mlx->mlx, mlx->win_x, mlx->win_y)))
 		return (0);
+	if (!trans_coor(mlx))
+		return (0);
 	img = (int*)mlx_get_data_addr(mlx->image, info, info + 1, info + 2);
 	r = 0;
 	while (r < mlx->n_r)
@@ -84,9 +85,5 @@ int					init_win(t_mlx *mlx)
 		return (0);
 	if (!(mlx->win = mlx_new_window(mlx->mlx, mlx->win_x, mlx->win_y, "fdf")))
 		return (0);
-	// if (!(mlx->tw_dpt = (t_2dpt**)ft_memalloc(sizeof(t_2dpt) * mlx->n_r * mlx->n_c)))
-		// return (0);
-	// if (!(draw_image(mlx)))
-	// 	return (0);	
 	return (1);	
 }

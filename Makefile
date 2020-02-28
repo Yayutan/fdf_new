@@ -27,7 +27,8 @@ CLEAR = "\033[0m"
 SRC_NAME =	draw.c\
 			input.c\
 			math.c\
-			main.c
+			main.c\
+			transformations.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 OBJ = $(SRC_NAME:.c=.o)
