@@ -25,8 +25,8 @@ static int			key_handler(int k, t_mlx *mlx)
 		rotate(&mlx->param, k, -M_PI / 12); // M_PI
 	if (k == 123 || k == 124 || k == 125 || k == 126) // left;right;down;up
 		shift(mlx, k, 0.1);
-	// if (k == 31 || k == 35 || k == 33 || k == 47 || k == 41 || k == 39) // o p [ l ; '
-	// 	stretch(m, k, 0.1);
+	if (k == 31 || k == 35 || k == 33 || k == 37 || k == 41 || k == 39) // o p [ l ; '
+		stretch(&mlx->param, k, 0.1);
 	// keys to change perspective?
 	draw_image(mlx);
 	return (k);

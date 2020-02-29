@@ -40,7 +40,18 @@ void				shift(t_mlx *mlx, int k, double sh)
 		mlx->param.sht[1] += (int)(sh * mlx->win_y);
 }
 
-// void				stretch(t_mlx *mlx, int k, double per)
-// {
-	
-// }
+void				stretch(t_param *p, int k, double per)
+{
+	if (k == 31)
+		p->str[0] *= (1 + per);
+	else if (k == 37 && p->str[0] * (1 - per) > 0)
+		p->str[0] *= (1 - per);
+	else if (k == 35)
+		p->str[1] *= (1 + per);
+	else if (k == 41 && p->str[1] * (1 - per) > 0)
+		p->str[1] *= (1 - per);
+	else if (k == 33)
+		p->str[2] *= (1 + per);
+	else if (k == 39 && p->str[2] * (1 - per) > 0)
+		p->str[2] *= (1 - per);
+}
