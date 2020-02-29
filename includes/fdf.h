@@ -41,6 +41,13 @@ typedef struct	s_2dpt
 	int			y;
 }				t_2dpt;
 
+typedef struct s_param
+{
+	double		ang[3];
+	int			sht[2];
+	double		str[3];
+}				t_param;
+
 typedef struct s_mlx
 {
 	void		*win;
@@ -53,9 +60,9 @@ typedef struct s_mlx
 	int			win_sc[2];
 	double		min_z;
 	double		max_z;
-	double		ang[3];
-	int			sht[2];
-	double		str[3];
+	t_param		orig;
+	t_param		param;
+	// int			mode; // for other projections
 	t_3dpt		**th_dpt;
 	t_2dpt		**tw_dpt;
 
@@ -66,6 +73,10 @@ int				init_pt(char *filename, t_mlx *mlx);
 int				init_win(t_mlx *mlx);
 int				trans_coor(t_mlx *mlx);
 int				draw_image(t_mlx *mlx);
-void			rotate(t_mlx *mlx, int k, double ang);
+void			rotate(t_param *mlx, int k, double ang);
+void				shift(t_mlx *mlx, int k, double sh);
+void			reset_draw_param(t_param *param, t_param *orig);
+t_mlx			init_fdf(void);
+void			clean_struct(t_mlx *mlx);
 
 #endif

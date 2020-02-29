@@ -12,12 +12,12 @@
 
 #include "fdf.h"
 
-static t_2dpt		parallel_proj(t_3dpt thd, int sh_x, int sh_y) // confirm matrix
+static t_2dpt		best_projection(t_3dpt thd, int sh_x, int sh_y) // confirm matrix
 {
 	t_2dpt			res;
 
 	res.x = sh_x + (int)(thd.x);
-	res.y = sh_y / 2 + (int)(-thd.y - thd.z);
+	res.y = sh_y + (int)(-thd.y - thd.z);
 	return (res);
 }
 
@@ -33,7 +33,7 @@ static void			transform_pixel(t_mlx *mlx, t_3dpt **thd)
 		c = 0;
 		while (c < mlx->n_c)
 		{
-			res = parallel_proj(thd[r][c], mlx->sht[0], mlx->sht[1]);// change to function pointer
+			res = best_projection(thd[r][c], mlx->param.sht[0], mlx->param.sht[1]);// change to function pointer
 			mlx->tw_dpt[r][c].x = res.x;
 			mlx->tw_dpt[r][c].y = res.y;
 			// printf("(%.0f,%.0f,%.0f)->(%d,%d)\n ", thd[r][c].x, thd[r][c].y, thd[r][c].z, res.x, res.y);
@@ -67,9 +67,14 @@ static void			transform_th_d(t_mlx *mlx)
 			or[0] = mlx->th_dpt[r][c].x;
 			or[1] = mlx->th_dpt[r][c].y;
 			or[2] = mlx->th_dpt[r][c].z;
-			th_d_coor[r][c].x = mlx->str[0] * (or[0] * (cos(mlx->ang[1]) * cos(mlx->ang[2])) + or[1] * (-1 * cos(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (-1 * sin(mlx->ang[1])));
-			th_d_coor[r][c].y = mlx->str[1] * (or[0] * (cos(mlx->ang[0]) * sin(mlx->ang[2]) - cos(mlx->ang[2]) * sin(mlx->ang[0]) * sin(mlx->ang[1])) + or[1] * (cos(mlx->ang[0]) * cos(mlx->ang[2]) + sin(mlx->ang[0]) * sin(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (-1 * cos(mlx->ang[1]) * sin(mlx->ang[0])));
-			th_d_coor[r][c].z = mlx->str[2] * (or[0] * (cos(mlx->ang[0]) * cos(mlx->ang[2]) * sin(mlx->ang[1]) + sin(mlx->ang[0]) * sin(mlx->ang[2])) + or[1] * (cos(mlx->ang[2]) * sin(mlx->ang[0]) - cos(mlx->ang[0]) * sin(mlx->ang[1]) * sin(mlx->ang[2])) + or[2] * (cos(mlx->ang[0]) * cos(mlx->ang[1])));
+			th_d_coor[r][c].x = mlx->param.str[0] * (or[0] * (cos(mlx->param.ang[1]) * cos(mlx->param.ang[2]))
+				+ or[1] * (-1 * cos(mlx->param.ang[1]) * sin(mlx->param.ang[2])) + or[2] * (-1 * sin(mlx->param.ang[1])));
+			th_d_coor[r][c].y = mlx->param.str[1] * (or[0] * (cos(mlx->param.ang[0]) * sin(mlx->param.ang[2])
+				- cos(mlx->param.ang[2]) * sin(mlx->param.ang[0]) * sin(mlx->param.ang[1])) + or[1] * (cos(mlx->param.ang[0]) * cos(mlx->param.ang[2])
+				+ sin(mlx->param.ang[0]) * sin(mlx->param.ang[1]) * sin(mlx->param.ang[2])) + or[2] * (-1 * cos(mlx->param.ang[1]) * sin(mlx->param.ang[0])));
+			th_d_coor[r][c].z = mlx->param.str[2] * (or[0] * (cos(mlx->param.ang[0]) * cos(mlx->param.ang[2]) * sin(mlx->param.ang[1])
+				+ sin(mlx->param.ang[0]) * sin(mlx->param.ang[2])) + or[1] * (cos(mlx->param.ang[2]) * sin(mlx->param.ang[0]) - cos(mlx->param.ang[0])
+				* sin(mlx->param.ang[1]) * sin(mlx->param.ang[2])) + or[2] * (cos(mlx->param.ang[0]) * cos(mlx->param.ang[1])));
 			// printf("(%.0f,%.0f,%.0f)->(%.0f,%.0f,%.0f)\n", or[0], or[1], or[2], th_d_coor[r][c].x, th_d_coor[r][c].y, th_d_coor[r][c].z);
 			c++;
 		}

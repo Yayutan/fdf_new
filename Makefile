@@ -28,7 +28,8 @@ SRC_NAME =	draw.c\
 			input.c\
 			math.c\
 			main.c\
-			transformations.c
+			transformations.c\
+			util.c
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 OBJ = $(SRC_NAME:.c=.o)

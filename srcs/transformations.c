@@ -12,26 +12,33 @@
 
 #include "fdf.h"
 
-void				rotate(t_mlx *mlx, int k, double ang)
+void				rotate(t_param *p, int k, double ang) // pass in param gio ok?
 {
 	if (k == 0)
-		mlx->ang[0] += ang;
+		p->ang[0] += ang;
 	else if (k == 1)
-		mlx->ang[1] += ang;
+		p->ang[1] += ang;
 	else if (k == 2)
-		mlx->ang[2] += ang;
+		p->ang[2] += ang;
 	else if (k == 6)
-		mlx->ang[0] -= ang;
+		p->ang[0] -= ang;
 	else if (k == 7)
-		mlx->ang[1] -= ang;
+		p->ang[1] -= ang;
 	else if (k == 8)
-		mlx->ang[2] -= ang;	
+		p->ang[2] -= ang;	
 }
 
-// void				shift(t_mlx *mlx, int k, double per)
-// {
-	
-// }
+void				shift(t_mlx *mlx, int k, double sh)
+{
+	if (k == 123)
+		mlx->param.sht[0] -= (int)(sh * mlx->win_x);
+	else if (k == 124)
+		mlx->param.sht[0] += (int)(sh * mlx->win_x);
+	else if (k == 126)
+		mlx->param.sht[1] -= (int)(sh * mlx->win_y);
+	else if (k == 125)
+		mlx->param.sht[1] += (int)(sh * mlx->win_y);
+}
 
 // void				stretch(t_mlx *mlx, int k, double per)
 // {

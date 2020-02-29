@@ -129,10 +129,11 @@ int					init_pt(char *filename, t_mlx *mlx)
 	////////
 	close(fd);
 
-	mlx->str[0] = ((mlx->max_z - mlx->min_z) / 0.4) / ((mlx->n_r < mlx->n_c) ? mlx->n_r : mlx->n_c);
-	if (mlx->str[0] == 0)
-		mlx->str[0] = 1;
-	mlx->str[1] = mlx->str[0];
-	mlx->str[2] = 1;
+	mlx->orig.str[0] = ((mlx->max_z - mlx->min_z) / 0.4) / ((mlx->n_r < mlx->n_c) ? mlx->n_r : mlx->n_c);
+	if (mlx->orig.str[0] == 0)
+		mlx->orig.str[0] = 1;
+	mlx->orig.str[1] = mlx->orig.str[0];
+	mlx->orig.str[2] = 1;
+	ft_memcpy(mlx->param.str, mlx->orig.str, sizeof(double) * 3);
 	return (1);
 }
