@@ -32,13 +32,10 @@ t_mlx				init_fdf(void)
 	to_ret.n_c = -1;
 	to_ret.win_x = 750;
 	to_ret.win_y = 600;
-	to_ret.win_sc[0] = -1;
-	to_ret.win_sc[1] = -1;
-	// to_ret.orig.ang[0] = -M_PI / 12;
-	to_ret.orig.ang[0] = 0.0;
+	to_ret.win_sc = -1;
+	to_ret.orig.ang[0] = -M_PI / 12;
 	to_ret.orig.ang[1] = 0.0;
-	// to_ret.orig.ang[2] = -M_PI / 12;
-	to_ret.orig.ang[2] = 0.0;
+	to_ret.orig.ang[2] = -M_PI / 12;
 	to_ret.orig.sht[0] = to_ret.win_x / 2;
 	to_ret.orig.sht[1] = to_ret.win_y / 2;
 	to_ret.orig.str[0] = 1;

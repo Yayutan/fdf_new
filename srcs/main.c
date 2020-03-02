@@ -12,8 +12,6 @@
 
 #include "fdf.h"
 
-
-
 static int			key_handler(int k, t_mlx *mlx)
 {
 	printf ("%d\n", k);
@@ -46,7 +44,7 @@ int					main(int ac, char **av)
 		clean_struct(&mlx);
 		ft_err_exit("Failed to allocate pts and window");
 	}
-	if (!trans_coor(&mlx) || !draw_image(&mlx))
+	if (!draw_image(&mlx))
 	{
 		clean_struct(&mlx);
 		ft_err_exit("Failed to put points to window");

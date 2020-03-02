@@ -12,36 +12,79 @@
 
 #include "fdf.h"
 
-static t_2dpt		best_projection(t_3dpt thd, int sh_x, int sh_y) // confirm matrix
-{
-	t_2dpt			res;
-
-	res.x = sh_x + (int)(thd.x);
-	res.y = sh_y + (int)(-thd.y - thd.z);
-	return (res);
-}
-
-static void			transform_pixel(t_mlx *mlx, t_3dpt **thd)
+static void			calibrate(t_mlx *mlx, t_2dpt min, t_2dpt max)
 {
 	int				r;
 	int				c;
-	t_2dpt			res;
+	t_2dpt			mid;
 
+	mid = mlx->tw_dpt[mlx->n_r / 2][mlx->n_c / 2];
+	if (mlx->win_sc < 0)
+	{
+		mlx->win_sc = 0.8 * (((mlx->win_x / (max.x - min.x)) < (mlx->win_y / (max.y - min.y))) ? (mlx->win_x / (max.x - min.x)) : (mlx->win_y / (max.y - min.y)));
+		// mlx->param.sht[0] = (mlx->win_x / 2) - ((min.x + max.x) / 2 - mid.x) * mlx->win_sc + mid.x;
+		// mlx->param.sht[1] = (mlx->win_y * 3 / 4) - (max.y - mid.y) * mlx->win_sc + mid.y;
+	}
+	// mid.x = mlx->win_x / 2;
+	// mid.y = mlx->win_y / 2;
 	r = 0;
 	while (r < mlx->n_r)
 	{
 		c = 0;
 		while (c < mlx->n_c)
 		{
-			res = best_projection(thd[r][c], mlx->param.sht[0], mlx->param.sht[1]);// change to function pointer
+			mlx->tw_dpt[r][c].x = (mlx->tw_dpt[r][c].x - mid.x) * mlx->win_sc + mid.x + mlx->param.sht[0];
+			mlx->tw_dpt[r][c].y = (mlx->tw_dpt[r][c].y - mid.y) * mlx->win_sc + mid.y + mlx->param.sht[1];
+			printf("[%d][%d]:(%d,%d)\n ", r, c, mlx->tw_dpt[r][c].x, mlx->tw_dpt[r][c].y);
+			c++;
+		}
+		r++;
+	}	
+}
+
+static void			transform_pixel(t_mlx *mlx, t_3dpt **thd)
+{
+	int				r;
+	int				c;
+	t_2dpt			max;
+	t_2dpt			min;
+	t_2dpt			res;
+
+	max.x = INT_MIN;
+	max.y = INT_MIN;
+	min.x = INT_MAX;
+	min.y = INT_MAX;
+	r = 0;
+	while (r < mlx->n_r)
+	{
+		c = 0;
+		while (c < mlx->n_c)
+		{
+			res = general_projection(thd[r][c]);
 			mlx->tw_dpt[r][c].x = res.x;
 			mlx->tw_dpt[r][c].y = res.y;
-			// printf("(%.0f,%.0f,%.0f)->(%d,%d)\n ", thd[r][c].x, thd[r][c].y, thd[r][c].z, res.x, res.y);
+			if (mlx->tw_dpt[r][c].x < min.x)
+				min.x = mlx->tw_dpt[r][c].x;
+			if (mlx->tw_dpt[r][c].x > max.x)
+				max.x = mlx->tw_dpt[r][c].x;
+			if (mlx->tw_dpt[r][c].y < min.y)
+				min.y = mlx->tw_dpt[r][c].y;
+			if (mlx->tw_dpt[r][c].y > max.y)
+				max.y = mlx->tw_dpt[r][c].y;
+			// if (res.x < min.x)
+			// 	min.x = res.x;
+			// if (res.x > max.x)
+			// 	max.x = res.x;
+			// if (res.y < min.y)
+			// 	min.y = res.y;
+			// if (res.y > max.y)
+			// 	max.y = res.y;
+			printf("[%d][%d]:(%d,%d)\n ", r, c, mlx->tw_dpt[r][c].x, mlx->tw_dpt[r][c].y);
 			c++;
 		}
 		r++;
 	}
-	// scale ?
+	calibrate(mlx, min, max);
 }
 
 static void			transform_th_d(t_mlx *mlx)
@@ -50,6 +93,7 @@ static void			transform_th_d(t_mlx *mlx)
 	int				r;
 	int				c;
 	double			or[3];
+	t_3dpt			mid;
 
 	th_d_coor = (t_3dpt**)ft_memalloc(sizeof(t_3dpt*) * mlx->n_r);
 	r = 0;
@@ -58,15 +102,23 @@ static void			transform_th_d(t_mlx *mlx)
 		th_d_coor[r] = (t_3dpt*)ft_memalloc(sizeof(t_3dpt) * mlx->n_c);
 		r++;
 	}
+	mid = mlx->th_dpt[mlx->n_r / 2][mlx->n_c / 2];
 	r = 0;
 	while (r < mlx->n_r)
 	{
 		c = 0;
 		while (c < mlx->n_c)
 		{
-			or[0] = mlx->th_dpt[r][c].x;
-			or[1] = mlx->th_dpt[r][c].y;
-			or[2] = mlx->th_dpt[r][c].z;
+			or[0] = mlx->th_dpt[r][c].x - mid.x;
+			or[1] = mlx->th_dpt[r][c].y - mid.y;
+			or[2] = 0;
+
+
+
+
+
+
+
 			th_d_coor[r][c].x = mlx->param.str[0] * (or[0] * (cos(mlx->param.ang[1]) * cos(mlx->param.ang[2]))
 				+ or[1] * (-1 * cos(mlx->param.ang[1]) * sin(mlx->param.ang[2])) + or[2] * (-1 * sin(mlx->param.ang[1])));
 			th_d_coor[r][c].y = mlx->param.str[1] * (or[0] * (cos(mlx->param.ang[0]) * sin(mlx->param.ang[2])
@@ -75,7 +127,7 @@ static void			transform_th_d(t_mlx *mlx)
 			th_d_coor[r][c].z = mlx->param.str[2] * (or[0] * (cos(mlx->param.ang[0]) * cos(mlx->param.ang[2]) * sin(mlx->param.ang[1])
 				+ sin(mlx->param.ang[0]) * sin(mlx->param.ang[2])) + or[1] * (cos(mlx->param.ang[2]) * sin(mlx->param.ang[0]) - cos(mlx->param.ang[0])
 				* sin(mlx->param.ang[1]) * sin(mlx->param.ang[2])) + or[2] * (cos(mlx->param.ang[0]) * cos(mlx->param.ang[1])));
-			// printf("(%.0f,%.0f,%.0f)->(%.0f,%.0f,%.0f)\n", or[0], or[1], or[2], th_d_coor[r][c].x, th_d_coor[r][c].y, th_d_coor[r][c].z);
+			printf("(%.0f,%.0f,%.0f)->(%.0f,%.0f,%.0f)\n", or[0], or[1], or[2], th_d_coor[r][c].x, th_d_coor[r][c].y, th_d_coor[r][c].z);
 			c++;
 		}
 		r++;
@@ -107,3 +159,4 @@ int					trans_coor(t_mlx *mlx) // needs error check
 	// ft_memcpy(mlx->tw_dpt, tw_d_coor, sizeof(tw_d_coor));
 	return (1);
 }
+	

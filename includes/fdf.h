@@ -57,7 +57,7 @@ typedef struct s_mlx
 	int			n_c;
 	int			win_x;
 	int			win_y;
-	int			win_sc[2];
+	int			win_sc;
 	double		min_z;
 	double		max_z;
 	t_param		orig;
@@ -75,9 +75,10 @@ int				trans_coor(t_mlx *mlx);
 int				draw_image(t_mlx *mlx);
 void			rotate(t_param *mlx, int k, double ang);
 void			shift(t_mlx *mlx, int k, double sh);
-void				stretch(t_param *p, int k, double per);
+void			stretch(t_param *p, int k, double per);
 void			reset_draw_param(t_param *param, t_param *orig);
 t_mlx			init_fdf(void);
 void			clean_struct(t_mlx *mlx);
+t_2dpt			general_projection(t_3dpt thd);
 
 #endif

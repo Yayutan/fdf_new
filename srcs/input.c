@@ -87,8 +87,8 @@ static void			add_line(char *line, t_3dpt *arr, t_mlx *mlx, int row)
 		s_i++;
 	while (line[s_i] && a_i < mlx->n_c)
 	{
-		arr[a_i].x = a_i - ((double)(mlx->n_c - 1) / 2);
-		arr[a_i].y = ((double)(mlx->n_r - 1) / 2) - row;
+		arr[a_i].x = a_i; //- ((double)(mlx->n_c - 1) / 2);
+		arr[a_i].y = row; //((double)(mlx->n_r - 1) / 2) - row;
 		arr[a_i].z = (double)ft_atoi(line + s_i);
 		while (line[s_i] && line[s_i] != ' ')
 			s_i++;
@@ -129,10 +129,12 @@ int					init_pt(char *filename, t_mlx *mlx)
 	////////
 	close(fd);
 
-	mlx->orig.str[0] = ((mlx->max_z - mlx->min_z) / 0.4) / ((mlx->n_r < mlx->n_c) ? mlx->n_r : mlx->n_c);
+	mlx->orig.str[0] = ((mlx->max_z - mlx->min_z) / 0.3) / ((mlx->n_r < mlx->n_c) ? mlx->n_r : mlx->n_c); // need adjdustments
+	mlx->orig.str[1] = mlx->orig.str[0] / 2;
 	if (mlx->orig.str[0] == 0)
 		mlx->orig.str[0] = 1;
-	mlx->orig.str[1] = mlx->orig.str[0];
+	if (mlx->orig.str[1] == 0)
+		mlx->orig.str[1] = 1;
 	mlx->orig.str[2] = 1;
 	ft_memcpy(mlx->param.str, mlx->orig.str, sizeof(double) * 3);
 	return (1);
